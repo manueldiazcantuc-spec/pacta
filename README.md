@@ -17,4 +17,7 @@ Precios: objeto `TIERS` (Esencial $990, Estándar $1,990, Especializado $3,490, 
 
 ## Publicación
 
-GitHub Pages: Settings › Pages › Deploy from a branch › `main` / root.
+**Netlify (recomendado):** app.netlify.com › Add new site › Import an existing project › GitHub › `pacta`.
+La configuración ya está en `netlify.toml`; no hay comando de build. Cada cambio que se sube a `main` se publica solo.
+
+**GitHub Pages (alternativa):** Settings › Pages › Deploy from a branch › `main` / root.
