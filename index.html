@@ -200,8 +200,7 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)
 .card .meta .pr{font-family:var(--f-display);font-size:17px;font-weight:600;font-variant-numeric:tabular-nums}
 .card .meta .pr small{display:block;color:var(--muted);font-size:12px;font-family:var(--f-body)}
 .tier{align-self:flex-start;font-family:var(--f-mono);font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;padding:3px 8px;border-radius:6px;background:var(--surface-2);color:var(--muted)}
-.tier.t-especializado{background:var(--primary-soft);color:var(--primary)}
-.tier.t-complejo{background:var(--seal-soft);color:var(--seal)}
+.tier.t-especial{background:var(--primary-soft);color:var(--primary)}
 .card .btn{padding:9px 15px;font-size:14.5px}
 
 /* Muestra de contrato */
@@ -246,9 +245,10 @@ table.cmp{width:100%;min-width:680px;border-collapse:collapse;font-size:15.5px}
 .no .lucide{color:var(--danger);width:18px;height:18px;stroke-width:2.4}
 
 /* Precios */
-.tiers{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
-@media (max-width:1000px){.tiers{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media (max-width:540px){.tiers{grid-template-columns:minmax(0,1fr)}}
+.tiers{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+@media (max-width:900px){.tiers{grid-template-columns:minmax(0,1fr)}}
+.tier-card .btn{align-self:flex-start}
+.tier-card .amt.txt{font-size:30px}
 .tier-card{display:flex;flex-direction:column;gap:14px;padding:26px 22px;border-radius:var(--r);border:1px solid var(--line);background:var(--surface)}
 .tier-card.pop{border:2px solid var(--primary);box-shadow:var(--shadow)}
 .tier-card .tn{font-family:var(--f-display);font-size:20px;font-weight:700;display:flex;justify-content:space-between;align-items:center;gap:8px}
@@ -380,7 +380,7 @@ footer{border-top:1px solid var(--line);background:var(--surface);padding-block:
         <h1>Tu contrato listo en <em>48 horas</em>, hecho por un abogado.</h1>
         <p class="hero-sub">Elige tu industria y el tipo de contrato, cuéntanos tu caso en unos minutos y recibe un documento redactado para ti, listo para firmar.</p>
         <ul class="checks">
-          <li><span class="tick"><i data-lucide="check"></i></span>Precio fijo desde $990 MXN, IVA incluido</li>
+          <li><span class="tick"><i data-lucide="check"></i></span>Precio único de $949 MXN por contrato, IVA incluido</li>
           <li><span class="tick"><i data-lucide="check"></i></span>Abogados con cédula profesional verificable</li>
           <li><span class="tick"><i data-lucide="check"></i></span>Dos rondas de cambios incluidas</li>
           <li><span class="tick"><i data-lucide="check"></i></span>Ajustado a las leyes de tu estado</li>
@@ -507,7 +507,7 @@ footer{border-top:1px solid var(--line);background:var(--surface);padding-block:
         <table class="cmp">
           <thead><tr><th scope="col"></th><th scope="col" class="us">Pacta</th><th scope="col">Despacho tradicional</th><th scope="col">Plantilla de internet</th></tr></thead>
           <tbody>
-            <tr><td>Precio</td><td class="us">Fijo, desde $990</td><td>Por hora o por cotización</td><td>Gratis o muy bajo</td></tr>
+            <tr><td>Precio</td><td class="us">$949 fijo por contrato</td><td>Por hora o por cotización</td><td>Gratis o muy bajo</td></tr>
             <tr><td>Tiempo de entrega</td><td class="us">48 h hábiles (24 h Express)</td><td>1 a 3 semanas</td><td>Inmediato</td></tr>
             <tr><td>Adaptado a tu caso</td><td class="us"><span class="yes"><i data-lucide="check"></i>Sí</span></td><td><span class="yes"><i data-lucide="check"></i>Sí</span></td><td><span class="no"><i data-lucide="x"></i>No</span></td></tr>
             <tr><td>Revisado por abogado</td><td class="us"><span class="yes"><i data-lucide="check"></i>Con cédula visible</span></td><td><span class="yes"><i data-lucide="check"></i>Sí</span></td><td><span class="no"><i data-lucide="x"></i>No</span></td></tr>
@@ -524,12 +524,12 @@ footer{border-top:1px solid var(--line);background:var(--surface);padding-block:
     <div class="wrap">
       <div class="sec-head">
         <span class="eyebrow">Precios</span>
-        <h2>Precio fijo según la complejidad del contrato</h2>
-        <p>Sabes cuánto pagas antes de empezar. Si tu caso es distinto a lo que elegiste, el abogado te lo dice antes de cobrarte.</p>
+        <h2>Un solo precio para tu contrato</h2>
+        <p>Todos los contratos del catálogo cuestan $949. Si tu caso necesita un contrato especializado, primero agendas una llamada con un abogado y te cotiza antes de empezar.</p>
       </div>
       <div class="tiers" id="tiers"></div>
       <div class="extras">
-        <span><i data-lucide="zap"></i>Entrega Express en 24 h: <b>+50%</b></span>
+        <span><i data-lucide="zap"></i>Entrega Express en 24 h: <b>+$500</b></span>
         <span><i data-lucide="search-check"></i>Revisión de un contrato que ya tienes: <b>$790</b></span>
         <span><i data-lucide="compass"></i>Orientación para elegir contrato: <b>sin costo</b></span>
         <span><i data-lucide="receipt-text"></i>Factura CFDI: <b>incluida</b></span>
@@ -555,6 +555,7 @@ footer{border-top:1px solid var(--line);background:var(--surface);padding-block:
         <details><summary>¿Un contrato hecho en línea tiene validez legal?<i data-lucide="chevron-down"></i></summary><p>Sí. En México un contrato es válido cuando las partes están de acuerdo en el objeto y las condiciones, y lo firman con capacidad para hacerlo. La mayoría de los contratos no necesita notario. Algunos actos sí exigen una formalidad especial, como la compraventa de un inmueble, que debe hacerse en escritura pública; en esos casos te lo decimos y preparamos el contrato previo que sí puedes firmar entre particulares.</p></details>
         <details><summary>¿Quién redacta mi contrato?<i data-lucide="chevron-down"></i></summary><p>Un abogado titulado con cédula profesional expedida por la SEP. Su nombre y número de cédula aparecen en la entrega, y puedes verificarlos en el Registro Nacional de Profesionistas.</p></details>
         <details><summary>¿Cuándo y cómo pago?<i data-lucide="chevron-down"></i></summary><p>Al terminar tu solicitud ves el precio final y puedes pagar en ese momento a través de Mercado Pago: con tarjeta de crédito o débito, con tu saldo de Mercado Pago o en efectivo en OXXO. El plazo de entrega empieza cuando se acredita tu pago. Si el abogado detecta que tu caso necesita un contrato distinto, te escribe por WhatsApp antes de empezar.</p></details>
+        <details><summary>¿Qué es un contrato especializado?<i data-lucide="chevron-down"></i></summary><p>Son contratos con más riesgo o con varias partes, como desarrollo de software, obra, distribución, franquicias, términos y condiciones de una app o convenios entre socios. En estos casos agendas una llamada con un abogado: define contigo el alcance y te da el precio antes de empezar.</p></details>
         <details><summary>¿Cómo pago en OXXO?<i data-lucide="chevron-down"></i></summary><p>Al pagar, elige la opción de efectivo y después OXXO. Mercado Pago te da una referencia que puedes mostrar en la caja de cualquier tienda. Cuando el pago se acredita, te avisamos por WhatsApp y empieza a correr el plazo de entrega.</p></details>
         <details><summary>¿Puedo hablar con alguien antes de pedir mi contrato?<i data-lucide="chevron-down"></i></summary><p>Sí. Escríbenos por WhatsApp de lunes a viernes de 9:00 a 19:00 h (hora del centro). Te ayudamos a elegir el contrato y resolvemos tus dudas sobre el proceso.</p></details>
         <details><summary>¿Me dan factura?<i data-lucide="chevron-down"></i></summary><p>Sí. Emitimos CFDI para personas físicas y morales. Envíanos tu constancia de situación fiscal por WhatsApp o correo junto con tu folio.</p></details>
@@ -620,6 +621,7 @@ footer{border-top:1px solid var(--line);background:var(--surface);padding-block:
    whatsapp: número del negocio con lada de país, solo dígitos: 52 + 10 dígitos.
    formEndpoint: URL opcional que recibe las solicitudes (Formspree, Basin, Make o tu backend).
      Si está vacío, el cliente envía su solicitud por WhatsApp con todo el detalle ya escrito.
+   agendaLink: si está vacío, los contratos especializados se agendan por WhatsApp.
    paymentLinks: ligas de pago de Mercado Pago (Tu negocio › Link de pago), una por precio.
      Cada liga acepta tarjeta, saldo de Mercado Pago y efectivo en OXXO.
      Si una liga está vacía, el sitio le dice al cliente que recibirá su liga por WhatsApp. */
@@ -627,21 +629,17 @@ const CONFIG = {
   whatsapp: "525519531324",
   email: "[hola@tudominio.mx]",
   formEndpoint: "",
-  expressFactor: 1.5,
+  expressExtra: 500,            // cargo adicional por entrega Express en 24 h
+  agendaLink: "",               // opcional: liga de Calendly o Google Calendar para agendar contratos especializados
   paymentLinks: {
-    "esencial": "",       "esencial-express": "",       // $990   · $1,490
-    "estandar": "",       "estandar-express": "",       // $1,990 · $2,990
-    "especializado": "",  "especializado-express": "",  // $3,490 · $5,240
-    "complejo": "",       "complejo-express": "",       // $5,990 · $8,990
-    "revision": "",       "revision-express": ""        // $790   · $1,190
+    "base": "",      "base-express": "",      // $949 · $1,449
+    "revision": "",  "revision-express": ""   // $790 · $1,290
   }
 };
 
 const TIERS = {
-  esencial:      { name: "Esencial",      price: 990,  desc: "Acuerdos cortos entre dos partes, con pocas variables.", items: ["Confidencialidad, comodato, préstamos","Hasta 2 partes","Notas del abogado","2 rondas de cambios"] },
-  estandar:      { name: "Estándar",      price: 1990, desc: "Los contratos del día a día de un negocio o una familia.", items: ["Arrendamiento, servicios, trabajo","Hasta 3 partes y anexos","Notas del abogado","2 rondas de cambios"], pop: true },
-  especializado: { name: "Especializado", price: 3490, desc: "Operaciones con más riesgo, entregables o propiedad intelectual.", items: ["Software, obra, distribución","Cláusulas de penas y garantías","Llamada de 20 min con el abogado","2 rondas de cambios"] },
-  complejo:      { name: "Complejo",      price: 5990, desc: "Relaciones de largo plazo o con varias partes.", items: ["Franquicias, convenios entre socios","Partes y anexos ilimitados","Llamada de 45 min con el abogado","2 rondas de cambios"] }
+  base:     { name: "Contrato a la medida", price: 949, pop: true, desc: "Cualquier contrato de nuestro catálogo, redactado por un abogado para tu caso.", items: ["Arrendamiento, servicios, trabajo, confidencialidad y más","Hasta 3 partes y anexos","Notas del abogado","2 rondas de cambios"] },
+  especial: { name: "Contrato especializado", price: null, desc: "Operaciones con más riesgo o con varias partes. Primero hablas con un abogado.", items: ["Software, obra, distribución, franquicias y socios","Llamada con un abogado para definir el alcance","Cotización antes de empezar","2 rondas de cambios"] }
 };
 
 const INDUSTRIES = [
@@ -659,34 +657,34 @@ const INDUSTRIES = [
 
 const ROLES_DEFAULT = ["Ofrezco el bien o servicio", "Recibo el bien o servicio"];
 const CONTRACTS = [
-  { id:"arr-casa", name:"Arrendamiento de casa habitación", tier:"estandar", ind:["inmo","personal"], desc:"Renta de casa o departamento con depósito, fiador o póliza y reglas de uso.", roles:["Soy el arrendador (rento mi inmueble)","Soy el arrendatario (voy a rentar)"], hint:"Ej. Rento un departamento en Guadalajara a $14,000 al mes por 12 meses. Quiero un mes de depósito y un fiador." },
-  { id:"arr-local", name:"Arrendamiento de local u oficina", tier:"estandar", ind:["inmo","comercio","rest","salud"], desc:"Renta para uso comercial con incrementos anuales, mantenimiento y adecuaciones.", roles:["Soy el arrendador","Soy el arrendatario"] },
-  { id:"promesa", name:"Promesa de compraventa de inmueble", tier:"especializado", ind:["inmo","personal"], desc:"Asegura la operación y el anticipo mientras se firma la escritura ante notario.", roles:["Vendo el inmueble","Compro el inmueble"] },
-  { id:"admin-inm", name:"Administración de inmuebles", tier:"estandar", ind:["inmo"], desc:"Encarga a un tercero el cobro de rentas, mantenimiento y relación con inquilinos." },
-  { id:"comodato", name:"Comodato (préstamo de uso)", tier:"esencial", ind:["inmo","personal","transp"], desc:"Presta un inmueble, vehículo o equipo sin cobrar renta, con reglas de devolución.", roles:["Presto el bien","Recibo el bien"] },
-  { id:"serv-prof", name:"Prestación de servicios profesionales", tier:"estandar", ind:["tech","creat","salud","constr","empresa"], desc:"Alcance, honorarios, entregables y confidencialidad para freelancers y consultores.", roles:["Presto el servicio","Contrato el servicio"] },
-  { id:"nda", name:"Acuerdo de confidencialidad (NDA)", tier:"esencial", ind:["tech","creat","comercio","empresa"], desc:"Protege información sensible antes de negociar, invertir o contratar.", roles:["Comparto la información","Recibo la información","Ambas partes comparten"] },
-  { id:"dev-soft", name:"Desarrollo de software", tier:"especializado", ind:["tech"], desc:"Etapas, aceptación de entregables, soporte y titularidad del código fuente.", roles:["Desarrollo el software","Contrato el desarrollo"] },
-  { id:"saas", name:"Términos y condiciones de app o SaaS", tier:"especializado", ind:["tech"], desc:"Licencia de uso, suscripciones, limitación de responsabilidad y datos personales." },
-  { id:"cesion-pi", name:"Cesión de derechos de autor", tier:"estandar", ind:["tech","creat"], desc:"Transfiere los derechos patrimoniales de un logo, diseño, texto o código.", roles:["Soy el autor","Adquiero los derechos"] },
-  { id:"agencia", name:"Servicios de agencia de marketing", tier:"estandar", ind:["creat"], desc:"Iguala mensual, métricas, aprobación de contenidos y propiedad de las cuentas.", roles:["Soy la agencia","Contrato a la agencia"] },
-  { id:"influencer", name:"Colaboración con creador de contenido", tier:"estandar", ind:["creat"], desc:"Entregables, menciones, exclusividad, uso de imagen y pagos por campaña.", roles:["Soy el creador","Soy la marca"] },
-  { id:"distrib", name:"Distribución mercantil", tier:"especializado", ind:["comercio","rest"], desc:"Territorio, exclusividad, metas de venta y uso de marca del proveedor.", roles:["Soy el proveedor","Soy el distribuidor"] },
-  { id:"suministro", name:"Suministro", tier:"estandar", ind:["comercio","rest","constr","salud"], desc:"Entregas periódicas de producto con precios, calidad y penalizaciones por retraso.", roles:["Suministro el producto","Compro el producto"] },
-  { id:"consignacion", name:"Consignación", tier:"estandar", ind:["comercio"], desc:"Deja mercancía en un punto de venta y cobra solo lo que se vende.", roles:["Entrego la mercancía","Vendo la mercancía"] },
-  { id:"compraventa", name:"Compraventa mercantil", tier:"estandar", ind:["comercio","transp"], desc:"Venta de mercancía, maquinaria o lotes con garantías y condiciones de entrega.", roles:["Vendo","Compro"] },
-  { id:"franquicia", name:"Franquicia", tier:"complejo", ind:["comercio","rest"], desc:"Licencia de marca y modelo de negocio, regalías y asistencia técnica.", roles:["Soy el franquiciante","Soy el franquiciatario"] },
-  { id:"obra", name:"Obra a precio alzado", tier:"especializado", ind:["constr"], desc:"Construcción o remodelación con presupuesto cerrado, calendario y fianzas.", roles:["Soy el contratista","Soy el dueño de la obra"] },
-  { id:"subcontrato", name:"Subcontrato de obra", tier:"especializado", ind:["constr"], desc:"Encarga una parte de la obra a otro contratista con responsabilidades claras.", roles:["Soy el contratista principal","Soy el subcontratista"] },
-  { id:"arr-equipo", name:"Arrendamiento de maquinaria o vehículos", tier:"estandar", ind:["constr","transp"], desc:"Renta de equipo con seguro, mantenimiento y responsabilidad por daños.", roles:["Rento mi equipo","Rento equipo de alguien"] },
-  { id:"serv-medicos", name:"Prestación de servicios médicos", tier:"estandar", ind:["salud"], desc:"Para médicos, terapeutas y clínicas: honorarios, agenda y confidencialidad.", roles:["Presto el servicio","Contrato el servicio"] },
-  { id:"consentimiento", name:"Carta de consentimiento informado", tier:"esencial", ind:["salud"], desc:"Documento para procedimientos y tratamientos, alineado al expediente clínico." },
-  { id:"transporte", name:"Transporte de mercancías", tier:"estandar", ind:["transp"], desc:"Rutas, tiempos, responsabilidad por pérdida o daño y seguro de carga.", roles:["Soy el transportista","Contrato el transporte"] },
-  { id:"deposito", name:"Depósito y almacenaje", tier:"estandar", ind:["transp","comercio"], desc:"Guarda de mercancía en bodega con inventarios y condiciones de entrega.", roles:["Tengo la bodega","Guardo mi mercancía"] },
-  { id:"trabajo", name:"Contrato individual de trabajo", tier:"estandar", ind:["empresa","rest","salud","constr","comercio"], desc:"Conforme a la Ley Federal del Trabajo: indeterminado, determinado o con periodo de prueba.", roles:["Soy el patrón","Soy el trabajador"] },
-  { id:"socios", name:"Convenio entre socios o accionistas", tier:"complejo", ind:["empresa","tech"], desc:"Aportaciones, toma de decisiones, salida de socios y derecho de preferencia.", roles:["Soy socio fundador","Soy nuevo socio o inversionista"] },
-  { id:"mutuo", name:"Préstamo entre particulares (mutuo)", tier:"esencial", ind:["personal","empresa"], desc:"Monto, plazos, intereses y pagaré para prestar dinero con respaldo.", roles:["Presto el dinero","Recibo el préstamo"] },
-  { id:"auto", name:"Compraventa de vehículo usado", tier:"esencial", ind:["personal","transp"], desc:"Datos del auto, forma de pago, entrega de documentos y estado del vehículo.", roles:["Vendo el vehículo","Compro el vehículo"] },
+  { id:"arr-casa", name:"Arrendamiento de casa habitación", tier:"base", ind:["inmo","personal"], desc:"Renta de casa o departamento con depósito, fiador o póliza y reglas de uso.", roles:["Soy el arrendador (rento mi inmueble)","Soy el arrendatario (voy a rentar)"], hint:"Ej. Rento un departamento en Guadalajara a $14,000 al mes por 12 meses. Quiero un mes de depósito y un fiador." },
+  { id:"arr-local", name:"Arrendamiento de local u oficina", tier:"base", ind:["inmo","comercio","rest","salud"], desc:"Renta para uso comercial con incrementos anuales, mantenimiento y adecuaciones.", roles:["Soy el arrendador","Soy el arrendatario"] },
+  { id:"promesa", name:"Promesa de compraventa de inmueble", tier:"especial", ind:["inmo","personal"], desc:"Asegura la operación y el anticipo mientras se firma la escritura ante notario.", roles:["Vendo el inmueble","Compro el inmueble"] },
+  { id:"admin-inm", name:"Administración de inmuebles", tier:"base", ind:["inmo"], desc:"Encarga a un tercero el cobro de rentas, mantenimiento y relación con inquilinos." },
+  { id:"comodato", name:"Comodato (préstamo de uso)", tier:"base", ind:["inmo","personal","transp"], desc:"Presta un inmueble, vehículo o equipo sin cobrar renta, con reglas de devolución.", roles:["Presto el bien","Recibo el bien"] },
+  { id:"serv-prof", name:"Prestación de servicios profesionales", tier:"base", ind:["tech","creat","salud","constr","empresa"], desc:"Alcance, honorarios, entregables y confidencialidad para freelancers y consultores.", roles:["Presto el servicio","Contrato el servicio"] },
+  { id:"nda", name:"Acuerdo de confidencialidad (NDA)", tier:"base", ind:["tech","creat","comercio","empresa"], desc:"Protege información sensible antes de negociar, invertir o contratar.", roles:["Comparto la información","Recibo la información","Ambas partes comparten"] },
+  { id:"dev-soft", name:"Desarrollo de software", tier:"especial", ind:["tech"], desc:"Etapas, aceptación de entregables, soporte y titularidad del código fuente.", roles:["Desarrollo el software","Contrato el desarrollo"] },
+  { id:"saas", name:"Términos y condiciones de app o SaaS", tier:"especial", ind:["tech"], desc:"Licencia de uso, suscripciones, limitación de responsabilidad y datos personales." },
+  { id:"cesion-pi", name:"Cesión de derechos de autor", tier:"base", ind:["tech","creat"], desc:"Transfiere los derechos patrimoniales de un logo, diseño, texto o código.", roles:["Soy el autor","Adquiero los derechos"] },
+  { id:"agencia", name:"Servicios de agencia de marketing", tier:"base", ind:["creat"], desc:"Iguala mensual, métricas, aprobación de contenidos y propiedad de las cuentas.", roles:["Soy la agencia","Contrato a la agencia"] },
+  { id:"influencer", name:"Colaboración con creador de contenido", tier:"base", ind:["creat"], desc:"Entregables, menciones, exclusividad, uso de imagen y pagos por campaña.", roles:["Soy el creador","Soy la marca"] },
+  { id:"distrib", name:"Distribución mercantil", tier:"especial", ind:["comercio","rest"], desc:"Territorio, exclusividad, metas de venta y uso de marca del proveedor.", roles:["Soy el proveedor","Soy el distribuidor"] },
+  { id:"suministro", name:"Suministro", tier:"base", ind:["comercio","rest","constr","salud"], desc:"Entregas periódicas de producto con precios, calidad y penalizaciones por retraso.", roles:["Suministro el producto","Compro el producto"] },
+  { id:"consignacion", name:"Consignación", tier:"base", ind:["comercio"], desc:"Deja mercancía en un punto de venta y cobra solo lo que se vende.", roles:["Entrego la mercancía","Vendo la mercancía"] },
+  { id:"compraventa", name:"Compraventa mercantil", tier:"base", ind:["comercio","transp"], desc:"Venta de mercancía, maquinaria o lotes con garantías y condiciones de entrega.", roles:["Vendo","Compro"] },
+  { id:"franquicia", name:"Franquicia", tier:"especial", ind:["comercio","rest"], desc:"Licencia de marca y modelo de negocio, regalías y asistencia técnica.", roles:["Soy el franquiciante","Soy el franquiciatario"] },
+  { id:"obra", name:"Obra a precio alzado", tier:"especial", ind:["constr"], desc:"Construcción o remodelación con presupuesto cerrado, calendario y fianzas.", roles:["Soy el contratista","Soy el dueño de la obra"] },
+  { id:"subcontrato", name:"Subcontrato de obra", tier:"especial", ind:["constr"], desc:"Encarga una parte de la obra a otro contratista con responsabilidades claras.", roles:["Soy el contratista principal","Soy el subcontratista"] },
+  { id:"arr-equipo", name:"Arrendamiento de maquinaria o vehículos", tier:"base", ind:["constr","transp"], desc:"Renta de equipo con seguro, mantenimiento y responsabilidad por daños.", roles:["Rento mi equipo","Rento equipo de alguien"] },
+  { id:"serv-medicos", name:"Prestación de servicios médicos", tier:"base", ind:["salud"], desc:"Para médicos, terapeutas y clínicas: honorarios, agenda y confidencialidad.", roles:["Presto el servicio","Contrato el servicio"] },
+  { id:"consentimiento", name:"Carta de consentimiento informado", tier:"base", ind:["salud"], desc:"Documento para procedimientos y tratamientos, alineado al expediente clínico." },
+  { id:"transporte", name:"Transporte de mercancías", tier:"base", ind:["transp"], desc:"Rutas, tiempos, responsabilidad por pérdida o daño y seguro de carga.", roles:["Soy el transportista","Contrato el transporte"] },
+  { id:"deposito", name:"Depósito y almacenaje", tier:"base", ind:["transp","comercio"], desc:"Guarda de mercancía en bodega con inventarios y condiciones de entrega.", roles:["Tengo la bodega","Guardo mi mercancía"] },
+  { id:"trabajo", name:"Contrato individual de trabajo", tier:"base", ind:["empresa","rest","salud","constr","comercio"], desc:"Conforme a la Ley Federal del Trabajo: indeterminado, determinado o con periodo de prueba.", roles:["Soy el patrón","Soy el trabajador"] },
+  { id:"socios", name:"Convenio entre socios o accionistas", tier:"especial", ind:["empresa","tech"], desc:"Aportaciones, toma de decisiones, salida de socios y derecho de preferencia.", roles:["Soy socio fundador","Soy nuevo socio o inversionista"] },
+  { id:"mutuo", name:"Préstamo entre particulares (mutuo)", tier:"base", ind:["personal","empresa"], desc:"Monto, plazos, intereses y pagaré para prestar dinero con respaldo.", roles:["Presto el dinero","Recibo el préstamo"] },
+  { id:"auto", name:"Compraventa de vehículo usado", tier:"base", ind:["personal","transp"], desc:"Datos del auto, forma de pago, entrega de documentos y estado del vehículo.", roles:["Vendo el vehículo","Compro el vehículo"] },
   { id:"revision", name:"Revisión de un contrato que ya tienes", price:790, ind:"*", special:true, desc:"Te decimos qué riesgos tiene y te sugerimos cambios antes de firmar." },
   { id:"otro", name:"No sé cuál necesito", price:null, ind:"*", special:true, desc:"Describe tu situación y un abogado te orienta sin costo." }
 ];
@@ -704,15 +702,17 @@ const basePrice = c => c ? (c.price !== undefined ? c.price : TIERS[c.tier].pric
 const priceFor = (c, speed) => {
   const b = basePrice(c);
   if (b == null) return null;
-  return speed === "express" ? Math.round(b * CONFIG.expressFactor / 10) * 10 : b;
+  return speed === "express" ? b + CONFIG.expressExtra : b;
 };
 const waLink = text => `https://wa.me/${String(CONFIG.whatsapp).replace(/\D/g,"")}?text=${encodeURIComponent(text)}`;
 const waDisplay = () => { const d = String(CONFIG.whatsapp).replace(/\D/g,"").slice(-10); return `${d.slice(0,2)} ${d.slice(2,6)} ${d.slice(6)}`; };
+const isAgenda = c => !!c && c.tier === "especial";
+const SLOTS = ["Mañana · 9 a 12 h", "Mediodía · 12 a 15 h", "Tarde · 15 a 19 h"];
 const payLink = (c, speed) => { if (!c || basePrice(c) == null) return ""; const k = (c.tier || c.id) + (speed === "express" ? "-express" : ""); return (CONFIG.paymentLinks && CONFIG.paymentLinks[k]) || ""; };
 function requestMessage(){
-  const c = byId(S.contract), p = priceFor(c, S.speed);
+  const c = byId(S.contract), p = priceFor(c, S.speed), ag = isAgenda(c);
   const lines = [
-    "Hola, envío mi solicitud de contrato.",
+    ag ? "Hola, quiero agendar una asesoría para un contrato especializado." : "Hola, envío mi solicitud de contrato.",
     "",
     `Folio: ${S.folio}`,
     `Industria: ${indById(S.industry).name}`,
@@ -720,8 +720,8 @@ function requestMessage(){
     S.role ? `Mi papel: ${S.role}` : "",
     `Contrato como: ${S.party}`,
     `Estado: ${S.state}`,
-    `Entrega: ${S.speed === "express" ? "Express 24 h hábiles" : "Estándar 48 h hábiles"}`,
-    `Precio: ${p == null ? "por confirmar" : money(p)}`,
+    ag ? `Horario preferido para la llamada: ${S.slot}` : `Entrega: ${S.speed === "express" ? "Express 24 h hábiles" : "Estándar 48 h hábiles"}`,
+    ag ? "Precio: por cotizar en la asesoría" : `Precio: ${p == null ? "por confirmar" : money(p)}`,
     S.amount ? `Monto aproximado: ${S.amount}` : "",
     "",
     `Mi caso: ${S.desc.trim()}`,
@@ -735,7 +735,7 @@ function requestMessage(){
 const contractsFor = ind => CONTRACTS.filter(c => c.ind !== "*" && c.ind.includes(ind)).concat(CONTRACTS.filter(c => c.ind === "*"));
 
 /* ===================== estado del configurador ===================== */
-const S = { step:1, industry:null, contract:null, role:"", party:"", state:"", desc:"", amount:"", files:[], speed:"estandar", name:"", email:"", phone:"", consent:false, folio:"", errors:{} };
+const S = { step:1, industry:null, contract:null, role:"", party:"", state:"", desc:"", amount:"", files:[], speed:"estandar", slot:"", name:"", email:"", phone:"", consent:false, folio:"", errors:{} };
 
 const STEP_NAMES = ["Industria","Contrato","Tu caso","Entrega"];
 
@@ -770,7 +770,7 @@ function step2(){
     const p = basePrice(c);
     return `<button type="button" class="opt-row${c.special ? " special" : ""}" data-contract="${c.id}">
       <b>${c.name}</b><small>${c.desc}</small>
-      <span class="pr">${p == null ? "Sin costo" : money(p)}<small>${p == null ? "orientación" : c.tier ? TIERS[c.tier].name : "precio fijo"}</small></span>
+      <span class="pr">${isAgenda(c) ? "Se agenda" : p == null ? "Sin costo" : money(p)}<small>${isAgenda(c) ? "asesoría" : p == null ? "orientación" : "precio fijo"}</small></span>
     </button>`;}).join("")}</div>`;
 }
 
@@ -806,13 +806,19 @@ function step3(){
 function step4(){
   const c = byId(S.contract), e = S.errors;
   const std = priceFor(c,"estandar"), exp = priceFor(c,"express");
-  return `<span class="chip-back">${esc(c.name)} <button type="button" data-go="3">Editar caso</button></span>
+  const when = isAgenda(c) ? `
+  <p class="q">¿Cuándo te conviene la llamada con el abogado?</p>
+  <p class="q-sub">De lunes a viernes. Te confirmamos el día y la hora por WhatsApp.</p>
+  <div class="pills" role="group">${SLOTS.map(t => `<button type="button" class="pill" data-slot="${t}" aria-pressed="${S.slot===t}">${t}</button>`).join("")}</div>
+  ${e.slot ? `<span class="err">${e.slot}</span>` : ""}
+  <p class="q" style="margin-top:6px">¿Cómo te contactamos?</p>` : `
   <p class="q">¿Cuándo lo necesitas?</p>
   <div class="speed" role="group">
     <button type="button" data-speed="estandar" aria-pressed="${S.speed==="estandar"}"><b>Estándar</b><span>48 horas hábiles</span><span class="amt">${std == null ? "Por confirmar" : money(std)}</span></button>
     <button type="button" data-speed="express" aria-pressed="${S.speed==="express"}"><b>Express</b><span>24 horas hábiles</span><span class="amt">${exp == null ? "Por confirmar" : money(exp)}</span></button>
   </div>
-  <p class="q" style="margin-top:6px">¿A dónde te enviamos tu contrato?</p>
+  <p class="q" style="margin-top:6px">¿A dónde te enviamos tu contrato?</p>`;
+  return `<span class="chip-back">${esc(c.name)} <button type="button" data-go="3">Editar caso</button></span>${when}
   <div class="field"><label for="f-name">Nombre completo</label><input type="text" id="f-name" autocomplete="name" class="${e.name ? "invalid" : ""}" value="${esc(S.name)}">${e.name ? `<span class="err">${e.name}</span>` : ""}</div>
   <div class="row2">
     <div class="field"><label for="f-email">Correo</label><input type="email" id="f-email" autocomplete="email" class="${e.email ? "invalid" : ""}" value="${esc(S.email)}">${e.email ? `<span class="err">${e.email}</span>` : ""}</div>
@@ -828,6 +834,7 @@ function step5(){
   const p = priceFor(c, S.speed);
   const link = payLink(c, S.speed);
   const viaWa = !CONFIG.formEndpoint;
+  if (isAgenda(c)) return stepAgenda(c, viaWa);
   const waBlock = viaWa ? `
     <div class="pay">
       <span class="step-tag">Paso 1 · Envía tu solicitud</span>
@@ -865,17 +872,40 @@ function step5(){
   </div>`;
 }
 
+function stepAgenda(c, viaWa){
+  const first = esc(S.name.trim().split(" ")[0]);
+  return `<div class="done">
+    <span class="badge"><i data-lucide="calendar-check"></i></span>
+    <p class="q">${viaWa ? "Tu solicitud de asesoría está lista" : "Recibimos tu solicitud de asesoría"}, ${first}.</p>
+    <span class="folio">Folio ${S.folio}</span>
+    <p style="color:var(--muted);font-size:15.5px">${esc(c.name)} · ${esc(S.state)} · ${esc(S.slot)}</p>
+    <div class="pay">
+      <span class="step-tag">Agenda tu llamada</span>
+      ${CONFIG.agendaLink ? `<a class="btn btn-primary" href="${esc(CONFIG.agendaLink)}" target="_blank" rel="noopener"><i data-lucide="calendar"></i>Elegir día y hora</a>` : ""}
+      ${viaWa || !CONFIG.agendaLink ? `<a class="btn btn-wa" href="${esc(waLink(requestMessage()))}" target="_blank" rel="noopener"><i data-lucide="message-circle"></i>${CONFIG.agendaLink ? "Enviar mi caso por WhatsApp" : "Agendar por WhatsApp"}</a>` : ""}
+      <small>${CONFIG.agendaLink ? "Elige el horario que te convenga y envíanos tu caso para que el abogado llegue preparado." : "Se abre WhatsApp con tu caso ya escrito. Solo presiona enviar y te confirmamos día y hora."}</small>
+    </div>
+    <ol class="timeline">
+      <li><b>Confirmamos tu llamada</b><span>Por WhatsApp, en horario hábil.</span></li>
+      <li><b>Hablas con un abogado</b><span>Define contigo el alcance del contrato y los riesgos que hay que cubrir.</span></li>
+      <li><b>Recibes tu cotización</b><span>Con precio y fecha de entrega antes de empezar. Pagas con tarjeta, Mercado Pago u OXXO.</span></li>
+    </ol>
+    <div style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" class="btn btn-link" data-reset>Pedir otro contrato</button></div>
+  </div>`;
+}
+
 function footer(){
   const c = byId(S.contract);
-  let label = "Precios desde", val = money(990);
-  if (c) {
+  let label = "Precio único por contrato", val = money(TIERS.base.price);
+  if (isAgenda(c)) { label = "Contrato especializado"; val = "Se agenda"; }
+  else if (c) {
     const p = priceFor(c, S.speed);
     label = p == null ? "Orientación" : "Precio fijo · IVA incluido";
     val = p == null ? "Sin costo" : money(p);
   }
   const back = S.step > 1 ? `<button type="button" class="btn-link" data-go="${S.step-1}"><i data-lucide="arrow-left"></i>Atrás</button>` : "";
   const next = S.step === 3 ? `<button type="button" class="btn btn-primary" data-next>Continuar <i data-lucide="arrow-right"></i></button>`
-             : S.step === 4 ? `<button type="button" class="btn btn-primary" data-submit>Continuar al pago <i data-lucide="arrow-right"></i></button>` : "";
+             : S.step === 4 ? `<button type="button" class="btn btn-primary" data-submit>${isAgenda(c) ? "Solicitar asesoría" : "Continuar al pago"} <i data-lucide="arrow-right"></i></button>` : "";
   return `<div class="price-box"><small>${label}</small><b>${val}</b></div><div class="foot-actions">${back}${next}</div>`;
 }
 
@@ -886,6 +916,7 @@ function bind(){
   root.querySelectorAll("[data-go]").forEach(b => b.onclick = () => go(+b.dataset.go));
   root.querySelectorAll("[data-role]").forEach(b => b.onclick = () => { S.role = b.dataset.role; delete S.errors.role; render(); });
   root.querySelectorAll("[data-party]").forEach(b => b.onclick = () => { S.party = b.dataset.party; delete S.errors.party; render(); });
+  root.querySelectorAll("[data-slot]").forEach(b => b.onclick = () => { S.slot = b.dataset.slot; delete S.errors.slot; render(); });
   root.querySelectorAll("[data-speed]").forEach(b => b.onclick = () => { S.speed = b.dataset.speed; render(); });
   const map = { "f-state":"state", "f-desc":"desc", "f-amount":"amount", "f-name":"name", "f-email":"email", "f-phone":"phone" };
   Object.entries(map).forEach(([id,key]) => { const el = document.getElementById(id); if (el) el.addEventListener("input", () => { S[key] = el.value; }); if (el && el.tagName === "SELECT") el.addEventListener("change", () => { S[key] = el.value; }); });
@@ -908,6 +939,7 @@ function validate3(){
 }
 function validate4(){
   const e = {};
+  if (isAgenda(byId(S.contract)) && !S.slot) e.slot = "Elige un horario para la llamada.";
   if (S.name.trim().length < 3) e.name = "Escribe tu nombre.";
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(S.email.trim())) e.email = "Revisa tu correo, por ejemplo nombre@correo.com.";
   if (S.phone.replace(/\D/g,"").length < 10) e.phone = "Escribe 10 dígitos.";
@@ -931,7 +963,7 @@ async function submit(){
   try {
     if (CONFIG.formEndpoint) {
       const fd = new FormData();
-      const fields = { folio:S.folio, industria:indById(S.industry).name, contrato:c.name, papel:S.role, tipo_persona:S.party, estado:S.state, descripcion:S.desc, monto:S.amount, entrega:S.speed, precio:priceFor(c,S.speed) ?? "por confirmar", nombre:S.name, email:S.email, whatsapp:S.phone };
+      const fields = { folio:S.folio, industria:indById(S.industry).name, contrato:c.name, papel:S.role, tipo_persona:S.party, estado:S.state, descripcion:S.desc, monto:S.amount, entrega:isAgenda(c) ? "asesoría" : S.speed, horario:S.slot, precio:isAgenda(c) ? "por cotizar" : (priceFor(c,S.speed) ?? "por confirmar"), nombre:S.name, email:S.email, whatsapp:S.phone };
       Object.entries(fields).forEach(([k,v]) => fd.append(k, v));
       S.files.forEach(f => fd.append("adjuntos", f, f.name));
       const r = await fetch(CONFIG.formEndpoint, { method:"POST", body:fd, headers:{ Accept:"application/json" } });
@@ -957,8 +989,9 @@ function renderCatalog(){
       <span class="tier t-${c.tier}">${TIERS[c.tier].name}</span>
       <h3>${c.name}</h3>
       <p>${c.desc}</p>
-      <div class="meta"><span class="pr">${money(basePrice(c))}<small>Entrega en 48 h hábiles</small></span>
-      <button type="button" class="btn btn-primary" data-pick="${c.id}">Pedir este</button></div>
+      <div class="meta">${isAgenda(c)
+        ? `<span class="pr">Se agenda<small>Asesoría con un abogado</small></span><button type="button" class="btn btn-ghost" data-pick="${c.id}">Agendar</button>`
+        : `<span class="pr">${money(basePrice(c))}<small>Entrega en 48 h hábiles</small></span><button type="button" class="btn btn-primary" data-pick="${c.id}">Pedir este</button>`}</div>
     </article>`).join("");
   document.querySelectorAll("[data-tab]").forEach(b => b.onclick = () => { activeTab = b.dataset.tab; renderCatalog(); });
   document.querySelectorAll("[data-pick]").forEach(b => b.onclick = () => {
@@ -969,12 +1002,19 @@ function renderCatalog(){
 }
 
 function renderTiers(){
-  $("#tiers").innerHTML = Object.entries(TIERS).map(([k,t]) => `
+  const rev = byId("revision");
+  const cards = [
+    { ...TIERS.base, amt: `${money(TIERS.base.price)}<small>MXN por contrato, IVA incluido</small>`, cta: `<a class="btn btn-primary" href="#arma">Pedir mi contrato</a>` },
+    { ...TIERS.especial, amt: `Se agenda<small>Precio según el alcance de tu caso</small>`, txt: true, cta: `<a class="btn btn-ghost" href="${esc(CONFIG.agendaLink || waLink("Hola, quiero agendar una asesoría para un contrato especializado."))}" target="_blank" rel="noopener">Agendar asesoría</a>` },
+    { name: "Revisión de contrato", amt: `${money(rev.price)}<small>MXN, IVA incluido</small>`, desc: "¿Ya tienes un contrato? Te decimos qué riesgos tiene antes de firmar.", items: ["Análisis cláusula por cláusula","Cambios sugeridos por escrito","Respuesta en 48 h hábiles"], cta: `<a class="btn btn-ghost" href="#arma">Pedir revisión</a>` }
+  ];
+  $("#tiers").innerHTML = cards.map(t => `
     <article class="tier-card${t.pop ? " pop" : ""}">
-      <span class="tn">${t.name}${t.pop ? "<em>El más pedido</em>" : ""}</span>
-      <span class="amt">${money(t.price)}<small>MXN, IVA incluido</small></span>
+      <span class="tn">${t.name}${t.pop ? "<em>Precio único</em>" : ""}</span>
+      <span class="amt${t.txt ? " txt" : ""}">${t.amt}</span>
       <p>${t.desc}</p>
       <ul>${t.items.map(x => `<li><i data-lucide="check"></i>${x}</li>`).join("")}</ul>
+      ${t.cta}
     </article>`).join("");
 }
 
