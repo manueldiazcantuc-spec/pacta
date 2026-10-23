@@ -1,19 +1,22 @@
 // Diagnóstico de los avisos automáticos. No muestra claves, solo si existen.
 // Abrir:  /.netlify/functions/diagnostico
-// Prueba: /.netlify/functions/diagnostico?enviar=1  → envía un correo de prueba SOLO a OWNER_EMAIL.
-const env = (k) => (process.env[k] || "").trim();
-const isEmail = (v) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+// Prueba: /.netlify/functions/diagnostico?enviar=1  → envía un correo de prueba SOLO al correo del negocio.
+import { env, isEmail, mailProvider, ownerEmail, sendEmail, verifyGmail, whatsappReady } from "../lib/avisos.mjs";
 
 export default async (req) => {
   const url = new URL(req.url);
-  const from = env("MAIL_FROM");
-  const fromAddr = (from.match(/<([^>]+)>/) || [, from])[1].trim();
-  const fromDomain = fromAddr.includes("@") ? fromAddr.split("@")[1].toLowerCase() : "";
+  const provider = mailProvider();
   const out = {
-    variables: {
+    correo: {
+      proveedor: provider || "ninguno",
+      GMAIL_USER: env("GMAIL_USER") || null,
+      GMAIL_APP_PASSWORD: Boolean(env("GMAIL_APP_PASSWORD")),
       RESEND_API_KEY: Boolean(env("RESEND_API_KEY")),
-      MAIL_FROM: from || null,
-      OWNER_EMAIL: env("OWNER_EMAIL") || null,
+      MAIL_FROM: env("MAIL_FROM") || null,
+      avisos_a: ownerEmail() || null,
+    },
+    whatsapp: {
+      listo: whatsappReady(),
       WHATSAPP_TOKEN: Boolean(env("WHATSAPP_TOKEN")),
       WHATSAPP_PHONE_ID: Boolean(env("WHATSAPP_PHONE_ID")),
       WHATSAPP_TEMPLATE: env("WHATSAPP_TEMPLATE") || null,
@@ -21,43 +24,45 @@ export default async (req) => {
     problemas: [],
   };
 
-  if (!out.variables.RESEND_API_KEY) out.problemas.push("Falta RESEND_API_KEY en Netlify › Site configuration › Environment variables.");
-  if (!from) out.problemas.push("Falta MAIL_FROM, por ejemplo: Pacta <contratos@tudominio.mx>.");
-  else if (!isEmail(fromAddr)) out.problemas.push(`MAIL_FROM no tiene un correo válido: "${from}".`);
-  if (!isEmail(env("OWNER_EMAIL"))) out.problemas.push("Falta OWNER_EMAIL (o no es un correo válido): ahí llega el aviso de cada solicitud.");
+  if (!provider) {
+    out.problemas.push("No hay forma de enviar correos. La más fácil: agrega GMAIL_USER (tu Gmail) y GMAIL_APP_PASSWORD (contraseña de aplicación de Google) en Netlify › Site configuration › Environment variables, y vuelve a publicar.");
+    if (env("GMAIL_USER") && !env("GMAIL_APP_PASSWORD")) out.problemas.push("Tienes GMAIL_USER pero falta GMAIL_APP_PASSWORD.");
+    if (env("RESEND_API_KEY") && !env("MAIL_FROM")) out.problemas.push("Tienes RESEND_API_KEY pero falta MAIL_FROM.");
+  }
+  if (!isEmail(ownerEmail())) out.problemas.push("Falta el correo donde recibes los avisos: agrega OWNER_EMAIL (o usa GMAIL_USER).");
 
-  if (out.variables.RESEND_API_KEY) {
-    try {
-      const r = await fetch("https://api.resend.com/domains", { headers: { Authorization: `Bearer ${env("RESEND_API_KEY")}` } });
-      const j = await r.json().catch(() => ({}));
-      if (r.status === 401 || r.status === 403) {
-        out.resend = { error: j.message || `HTTP ${r.status}` };
-        if (/restricted|sending/i.test(j.message || "")) out.resend.nota = "La clave es de solo envío; no puedo listar dominios, pero sí enviar. Usa ?enviar=1 para probar.";
-        else out.problemas.push("Resend rechazó la clave RESEND_API_KEY. Crea una nueva en resend.com › API Keys y reemplázala.");
-      } else {
-        const domains = (j.data || []).map((d) => ({ dominio: d.name, estado: d.status }));
-        out.resend = { dominios: domains };
-        const match = domains.find((d) => d.dominio.toLowerCase() === fromDomain);
-        if (fromDomain === "resend.dev") out.problemas.push("MAIL_FROM usa resend.dev: Resend solo deja enviar a tu propio correo. Verifica tu dominio y usa un remitente de ese dominio.");
-        else if (!match) out.problemas.push(`El dominio de MAIL_FROM (${fromDomain || "vacío"}) no está agregado en Resend › Domains.`);
-        else if (match.estado !== "verified") out.problemas.push(`El dominio ${match.dominio} está en estado "${match.estado}" en Resend. Faltan los registros DNS para verificarlo.`);
-      }
-    } catch (e) {
-      out.resend = { error: String(e.message || e) };
+  if (provider === "gmail") {
+    try { await verifyGmail(); out.correo.conexion = "Gmail aceptó el usuario y la contraseña de aplicación."; }
+    catch (e) {
+      out.correo.conexion = String(e.message || e);
+      out.problemas.push("Gmail rechazó el acceso. Usa una contraseña de aplicación (no tu contraseña normal) creada en myaccount.google.com/apppasswords; requiere tener activa la verificación en dos pasos.");
     }
   }
 
+  if (provider === "resend") {
+    const from = env("MAIL_FROM");
+    const domain = ((from.match(/<([^>]+)>/) || [, from])[1].split("@")[1] || "").toLowerCase();
+    try {
+      const r = await fetch("https://api.resend.com/domains", { headers: { Authorization: `Bearer ${env("RESEND_API_KEY")}` } });
+      const j = await r.json().catch(() => ({}));
+      if (r.ok) {
+        const doms = (j.data || []).map((d) => ({ dominio: d.name, estado: d.status }));
+        out.correo.dominios_resend = doms;
+        const m = doms.find((d) => d.dominio.toLowerCase() === domain);
+        if (domain === "resend.dev") out.problemas.push("MAIL_FROM usa resend.dev: Resend solo envía a tu propio correo. Verifica un dominio o usa Gmail.");
+        else if (!m) out.problemas.push(`El dominio de MAIL_FROM (${domain || "vacío"}) no está en Resend › Domains.`);
+        else if (m.estado !== "verified") out.problemas.push(`El dominio ${m.dominio} está "${m.estado}" en Resend: faltan los registros DNS.`);
+      } else if (r.status === 401) out.problemas.push("Resend rechazó RESEND_API_KEY. Crea una nueva clave.");
+    } catch (e) { out.correo.error = String(e.message || e); }
+  }
+
   if (url.searchParams.get("enviar") === "1") {
-    if (!out.variables.RESEND_API_KEY || !isEmail(fromAddr) || !isEmail(env("OWNER_EMAIL"))) {
-      out.prueba = "No se envió: faltan variables (ver problemas).";
-    } else {
-      const r = await fetch("https://api.resend.com/emails", {
-        method: "POST",
-        headers: { Authorization: `Bearer ${env("RESEND_API_KEY")}`, "Content-Type": "application/json" },
-        body: JSON.stringify({ from, to: [env("OWNER_EMAIL")], subject: "Prueba de correo de Pacta", html: "<p>Si lees esto, los correos automáticos funcionan.</p>" }),
-      });
-      const t = await r.text();
-      out.prueba = r.ok ? `Enviado a ${env("OWNER_EMAIL")}. Revisa también la carpeta de spam.` : `Resend respondió ${r.status}: ${t}`;
+    if (!provider || !isEmail(ownerEmail())) out.prueba = "No se envió: revisa la lista de problemas.";
+    else {
+      try {
+        await sendEmail({ to: ownerEmail(), subject: "Prueba de correo de Pacta", html: "<p>Si lees esto, los correos automáticos de tu sitio funcionan.</p>" });
+        out.prueba = `Enviado a ${ownerEmail()}. Si no lo ves, revisa la carpeta de spam.`;
+      } catch (e) { out.prueba = `Falló: ${String(e.message || e)}`; }
     }
   }
 

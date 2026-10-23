@@ -1,0 +1,9 @@
+{
+  "name": "pacta",
+  "private": true,
+  "type": "module",
+  "description": "Sitio de Pacta y funciones de Netlify para avisos por correo y WhatsApp",
+  "dependencies": {
+    "nodemailer": "^10.2.1"
+  }
+}

@@ -5,33 +5,43 @@ Sitio estático (`index.html`) con funciones de Netlify para guardar solicitudes
 ## Cómo fluye una solicitud
 
 1. El cliente llena el configurador y presiona **Continuar al pago** o **Solicitar asesoría**.
-2. El sitio guarda la solicitud en **Netlify Forms** (formulario `solicitud`), con hasta 3 archivos adjuntos (máximo 7 MB en total).
-3. Netlify ejecuta `netlify/functions/submission-created.mjs`, que:
-   - envía al cliente un **correo de confirmación** con su folio (Resend);
-   - te envía un **aviso con todos los datos** y los enlaces a los archivos (Resend);
-   - envía al cliente un **WhatsApp automático** con una plantilla aprobada (WhatsApp Cloud API de Meta).
-4. Si el sitio no está en Netlify o el guardado falla, el cliente envía su solicitud por WhatsApp con todo el texto ya escrito. Ninguna solicitud se pierde.
+2. El sitio hace dos cosas al mismo tiempo:
+   - guarda la solicitud en **Netlify Forms** (formulario `solicitud`), con hasta 3 archivos (máximo 4 MB en total);
+   - llama a `netlify/functions/solicitud.mjs`, que envía al momento:
+     - un **correo de confirmación** al cliente con su folio;
+     - un **aviso a ti** con todos los datos y los documentos adjuntos;
+     - un **WhatsApp automático** al cliente (si está configurado).
+3. Si el sitio no está en Netlify o todo falla, el cliente envía su solicitud por WhatsApp con el texto ya escrito.
 
-Cada canal se activa solo cuando sus variables están configuradas. Puedes activar el correo hoy y el WhatsApp automático después.
+Los correos ya no dependen de la detección de formularios ni del filtro de spam de Netlify.
+
+**Diagnóstico:** abre `https://TU-SITIO.netlify.app/.netlify/functions/diagnostico` para ver qué falta. Agrega `?enviar=1` para mandarte un correo de prueba.
 
 ## 1. Guardar solicitudes (Netlify Forms)
 
 1. Netlify › tu sitio › **Forms** › **Enable form detection**.
 2. Vuelve a publicar: **Deploys › Trigger deploy › Deploy site**.
-3. En **Forms** debe aparecer el formulario **solicitud**. Ahí verás cada solicitud, sus archivos y puedes exportarlas a CSV.
-4. Opcional: **Forms › Form notifications › Add notification › Email notification** para recibir también el aviso nativo de Netlify.
+3. En **Forms** aparecerá el formulario **solicitud** con cada solicitud y sus archivos; puedes exportarlas a CSV.
 
-## 2. Correos (Resend)
+## 2. Correos
 
-1. Crea una cuenta en resend.com y **verifica tu dominio** (Domains › Add domain, y agrega los registros DNS que te indica). Sin dominio verificado, Resend solo permite enviarte correos a ti mismo.
-2. Crea una API key (API Keys › Create).
+### Opción A: Gmail (sin dominio propio, recomendada para empezar)
+
+1. Activa la **verificación en dos pasos** de tu cuenta de Google.
+2. Entra a **myaccount.google.com/apppasswords**, crea una contraseña de aplicación llamada "Pacta" y copia los 16 caracteres.
 3. En Netlify › **Site configuration › Environment variables** agrega:
 
-| Variable | Ejemplo |
+| Variable | Valor |
 |---|---|
-| `RESEND_API_KEY` | `re_xxxxxxxx` |
-| `MAIL_FROM` | `Pacta <contratos@tudominio.mx>` (debe ser de tu dominio verificado) |
-| `OWNER_EMAIL` | El correo donde quieres recibir cada solicitud |
+| `GMAIL_USER` | Tu correo de Gmail |
+| `GMAIL_APP_PASSWORD` | La contraseña de aplicación de 16 caracteres |
+| `OWNER_EMAIL` | Opcional. Dónde recibir los avisos; si no lo pones, llegan a `GMAIL_USER` |
+
+Gmail permite alrededor de 500 correos al día desde una cuenta personal.
+
+### Opción B: Resend (con dominio propio verificado)
+
+Úsala cuando tengas tu dominio. Verifícalo en resend.com › Domains y agrega `RESEND_API_KEY` y `MAIL_FROM` (por ejemplo `Pacta <contratos@tudominio.mx>`). Si existen las variables de Gmail, el sitio usa Gmail; bórralas para usar Resend.
 
 ## 3. WhatsApp automático (WhatsApp Cloud API de Meta)
 

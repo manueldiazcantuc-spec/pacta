@@ -614,7 +614,7 @@ const CONFIG = {
   netlifyForms: true,
   formEndpoint: "",
   maxFiles: 3,                  // Netlify acepta un archivo por campo y 8 MB por envío
-  maxUploadMB: 7,
+  maxUploadMB: 4,
   expressExtra: 500,            // cargo adicional por entrega Express en 24 h
   agendaLink: "",               // opcional: liga de Calendly o Google Calendar para agendar contratos especializados
   paymentLinks: {
@@ -987,9 +987,13 @@ async function submit(){
     } else if (CONFIG.netlifyForms) {
       const st = await fetch("/.netlify/functions/estado", { cache:"no-store", signal:ctrl.signal }).then(r => r.ok ? r.json() : null).catch(() => null);
       if (st && st.netlify) {
-        const r = await fetch("/", { method:"POST", body:fd, signal:ctrl.signal });
-        S.sentOk = r.ok;
-        if (S.sentOk) S.notify = { email: !!st.email, whatsapp: !!st.whatsapp };
+        // 1) Guarda la solicitud en Netlify Forms. 2) Envía correos y WhatsApp al momento.
+        const [saved, sent] = await Promise.all([
+          fetch("/", { method:"POST", body:fd, signal:ctrl.signal }).then(r => r.ok).catch(() => false),
+          fetch("/.netlify/functions/solicitud", { method:"POST", body:fd, signal:ctrl.signal }).then(r => r.ok ? r.json() : null).catch(() => null)
+        ]);
+        S.sentOk = saved || !!(sent && sent.ok && (sent.owner || sent.email));
+        if (sent && sent.ok) S.notify = { email: !!sent.email, whatsapp: !!sent.whatsapp };
       }
     }
   } catch (err) { S.sentOk = false; }
