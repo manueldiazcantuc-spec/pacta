@@ -1,7 +1,11 @@
-# Configuración de Netlify para Pacta (sitio estático, sin compilación)
+# Configuración de Netlify para Pacta (sitio estático + funciones, sin compilación)
 [build]
   publish = "."
   command = ""
+
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"
 
 [[headers]]
   for = "/*"
@@ -15,9 +19,3 @@
   for = "/index.html"
   [headers.values]
     Cache-Control = "public, max-age=0, must-revalidate"
-
-# Cualquier ruta desconocida regresa al inicio
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
